@@ -10,10 +10,10 @@ import {
   checkBip32XPublicKeyValid,
 } from 'utils/mnemonic'
 
-function getTypeByInput(data: ?string): ?WalletCustomType {
+export async function getTypeByInput(data: ?string): Promise<?WalletCustomType> {
   if (!data) {
     return null
-  } else if (checkMnemonicValid(data)) {
+  } else if (await checkMnemonicValid(data)) {
     return 'mnemonic'
   } else if (checkBip32XPublicKeyValid(data)) {
     return 'bip32Xpub'
@@ -25,5 +25,3 @@ function getTypeByInput(data: ?string): ?WalletCustomType {
 
   return null
 }
-
-export default getTypeByInput

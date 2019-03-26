@@ -1,24 +1,33 @@
 // @flow
 
-import Mnemonic from 'bitcore-mnemonic'
-import { crypto } from 'bitcore-lib'
 import { t } from 'ttag'
 
 import config from 'config'
 
-const ENGLISH_WORDS: string[] = Mnemonic.Words.ENGLISH
+import {
+  getBitcoreCrypto,
+  getBitcoreMnemonic,
+} from '.'
 
-function concatEntropyBuffers(entropyBuffer: Buffer, randomBuffer: Buffer): Buffer {
+async function concatEntropyBuffers(
+  entropyBuffer: Buffer,
+  randomBuffer: Buffer,
+): Promise<Buffer> {
   const totalEntropy: Buffer = Buffer.concat([entropyBuffer, randomBuffer])
 
   if (totalEntropy.length !== (entropyBuffer.length + randomBuffer.length)) {
     throw new Error(t`Concatenation of entropy buffers failed`)
   }
 
+  const crypto = await getBitcoreCrypto()
+
   return crypto.Hash.sha256(totalEntropy)
 }
 
-function getHashedEntropy(entropy: ?string, randomBufferLength: number): ?Buffer {
+async function getHashedEntropy(
+  entropy: ?string,
+  randomBufferLength: number,
+): Promise<?Buffer> {
   if (!entropy) {
     return null
   } else if (typeof entropy !== 'string') {
@@ -26,22 +35,25 @@ function getHashedEntropy(entropy: ?string, randomBufferLength: number): ?Buffer
   }
 
   const entropyBuffer: Buffer = Buffer.from(entropy)
+  const crypto = await getBitcoreCrypto()
   const randomBuffer: Buffer = crypto.Random.getRandomBuffer(randomBufferLength)
+  const resultBuffer: Buffer = await concatEntropyBuffers(entropyBuffer, randomBuffer)
 
-  return concatEntropyBuffers(entropyBuffer, randomBuffer).slice(0, 16)
+  return resultBuffer.slice(0, 16)
 }
 
-function generateMnemonic(
+export async function generateMnemonic(
   entropy?: string,
   randomBufferLength?: number = config.defaultRandomBufferLength,
-): string {
-  const hashedEntropy: ?Buffer = getHashedEntropy(entropy, randomBufferLength)
+): Promise<string> {
+  const Mnemonic = await getBitcoreMnemonic()
+  const englishWords = Mnemonic.Words.ENGLISH
+  const hashedEntropy: ?Buffer = await getHashedEntropy(entropy, randomBufferLength)
 
-  const mnemonic = hashedEntropy
-    ? new Mnemonic(hashedEntropy, ENGLISH_WORDS)
-    : new Mnemonic(ENGLISH_WORDS)
+  const mnemonic = !hashedEntropy ? new Mnemonic(englishWords) : new Mnemonic(
+    hashedEntropy,
+    englishWords,
+  )
 
   return mnemonic.toString()
 }
-
-export default generateMnemonic

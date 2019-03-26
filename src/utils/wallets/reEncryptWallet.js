@@ -2,20 +2,20 @@
 
 import { t } from 'ttag'
 
-import checkMnemonicType from 'utils/wallets/checkMnemonicType'
+import { checkMnemonicType } from 'utils/wallets'
 
 import {
   decryptData,
   encryptData,
 } from 'utils/encryption'
 
-function reEncryptWallet(
+export async function reEncryptWallet(
   wallet: Wallet,
   internalKey: Uint8Array,
   encryptionType: string,
   internalKeyNew: Uint8Array,
   encryptionTypeNew: string,
-): Wallet {
+): Promise<Wallet> {
   const {
     type,
     encrypted,
@@ -27,13 +27,13 @@ function reEncryptWallet(
   }
 
   if (checkMnemonicType(type) && encrypted.mnemonic && encrypted.passphrase) {
-    const mnemonic: string = decryptData({
+    const mnemonic: string = await decryptData({
       encryptionType,
       key: internalKey,
       data: encrypted.mnemonic,
     })
 
-    const passphrase: string = decryptData({
+    const passphrase: string = await decryptData({
       encryptionType,
       key: internalKey,
       // $FlowFixMe
@@ -44,12 +44,12 @@ function reEncryptWallet(
       ...wallet,
       encrypted: {
         ...encrypted,
-        mnemonic: encryptData({
+        mnemonic: await encryptData({
           data: mnemonic,
           key: internalKeyNew,
           encryptionType: encryptionTypeNew,
         }),
-        passphrase: encryptData({
+        passphrase: await encryptData({
           data: passphrase,
           key: internalKeyNew,
           encryptionType: encryptionTypeNew,
@@ -57,7 +57,7 @@ function reEncryptWallet(
       },
     }
   } else if (!checkMnemonicType(type) && encrypted.privateKey) {
-    const privateKey: string = decryptData({
+    const privateKey: string = await decryptData({
       encryptionType,
       key: internalKey,
       data: encrypted.privateKey,
@@ -67,7 +67,7 @@ function reEncryptWallet(
       ...wallet,
       encrypted: {
         ...encrypted,
-        privateKey: encryptData({
+        privateKey: await encryptData({
           data: privateKey,
           key: internalKeyNew,
           encryptionType: encryptionTypeNew,
@@ -78,5 +78,3 @@ function reEncryptWallet(
 
   throw new Error(t`WalletDataError`)
 }
-
-export default reEncryptWallet

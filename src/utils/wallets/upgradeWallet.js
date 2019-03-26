@@ -4,14 +4,14 @@ import { t } from 'ttag'
 
 import config from 'config'
 import strip0x from 'utils/address/strip0x'
-import encryptData from 'utils/encryption/encryptData'
+import { encryptData } from 'utils/encryption'
 
 import {
   getWallet,
   checkMnemonicType,
 } from 'utils/wallets'
 
-import updateWallet from './updateWallet'
+import { updateWallet } from '.'
 
 type UpgradeWalletData = {|
   +items: Wallets,
@@ -22,14 +22,14 @@ type UpgradeWalletData = {|
   +internalKey: Uint8Array,
 |}
 
-function addMnemonic(
+async function addMnemonic(
   wallets: Wallets,
   wallet: Wallet,
   mnemonic: string,
   mnemonicOptions: MnemonicOptions,
   internalKey: Uint8Array,
   encryptionType: string,
-): Wallets {
+): Promise<Wallets> {
   const {
     id,
     type,
@@ -50,12 +50,12 @@ function addMnemonic(
     network,
     derivationPath,
     encrypted: {
-      mnemonic: encryptData({
+      mnemonic: await encryptData({
         encryptionType,
         data: mnemonic,
         key: internalKey,
       }),
-      passphrase: encryptData({
+      passphrase: await encryptData({
         encryptionType,
         key: internalKey,
         data: passphrase.trim().toLowerCase(),
@@ -67,13 +67,13 @@ function addMnemonic(
   })
 }
 
-function addPrivateKey(
+async function addPrivateKey(
   wallets: Wallets,
   wallet: Wallet,
   privateKey: string,
   internalKey: Uint8Array,
   encryptionType: string,
-): Wallets {
+): Promise<Wallets> {
   const {
     id,
     type,
@@ -86,7 +86,7 @@ function addPrivateKey(
 
   return updateWallet(wallets, id, {
     encrypted: {
-      privateKey: encryptData({
+      privateKey: await encryptData({
         encryptionType,
         key: internalKey,
         data: strip0x(privateKey),
@@ -99,15 +99,15 @@ function addPrivateKey(
   })
 }
 
-function upgradeWallet({
+export async function upgradeWallet({
   items,
   mnemonicOptions,
   data,
   walletId,
   internalKey,
   encryptionType,
-}: UpgradeWalletData): Wallets {
-  const wallet: Wallet = getWallet(items, walletId)
+}: UpgradeWalletData): Promise<Wallets> {
+  const wallet: Wallet = await getWallet(items, walletId)
 
   if (!wallet.isReadOnly) {
     throw new Error(t`WalletDataError`)
@@ -125,5 +125,3 @@ function upgradeWallet({
 
   return addPrivateKey(items, wallet, preparedData, internalKey, encryptionType)
 }
-
-export default upgradeWallet

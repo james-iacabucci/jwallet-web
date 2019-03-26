@@ -1,9 +1,9 @@
 // @flow
 
-import bitcore from 'bitcore-lib'
+import { getBitcore } from '.'
 
-function getPublicHdRoot(bip32XPublicKey: string): HDPublicKey {
+export async function getPublicHdRoot(bip32XPublicKey: string): Promise<HDPublicKey> {
+  const bitcore = await getBitcore()
+
   return new bitcore.HDPublicKey(bip32XPublicKey)
 }
-
-export default getPublicHdRoot

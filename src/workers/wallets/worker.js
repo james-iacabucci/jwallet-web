@@ -2,7 +2,7 @@
 
 import { t } from 'ttag'
 
-import generateMnemonic from 'utils/mnemonic/generateMnemonic'
+import { generateMnemonic } from 'utils/mnemonic'
 
 import {
   createWallet,
@@ -90,17 +90,20 @@ walletsWorker.onmessage = (msg: WalletsWorkerMessage): void => {
         const dk: Uint8Array = deriveKeyFromPassword(password, scryptParams, derivedKeyLength, salt)
         const internalKeyDec: Uint8Array = decryptInternalKey(internalKey, dk, encryptionType)
 
-        walletsWorker.postMessage(walletsCreate.createSuccess({
-          passwordOptions,
-          internalKey: internalKey || encryptInternalKey(internalKeyDec, dk, encryptionType),
-          items: createWallet(items, {
+        generateMnemonic()
+          .then((data: string) => createWallet(items, {
+            data,
             name,
             mnemonicOptions,
             createdBlockNumber,
             isSimplified: true,
-            data: generateMnemonic(),
-          }, internalKeyDec, encryptionType),
-        }))
+          }, internalKeyDec, encryptionType))
+          .then((newItems: Wallets) => walletsWorker.postMessage(walletsCreate.createSuccess({
+            passwordOptions,
+            internalKey: internalKey || encryptInternalKey(internalKeyDec, dk, encryptionType),
+            items: newItems,
+          })))
+          .catch(err => walletsWorker.postMessage(walletsCreate.createError(err.message)))
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error(err)

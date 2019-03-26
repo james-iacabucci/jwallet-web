@@ -2,12 +2,16 @@
 
 import { t } from 'ttag'
 
-import decryptData from 'utils/encryption/decryptData'
-import getPrivateKeyFromMnemonic from 'utils/mnemonic/getPrivateKeyFromMnemonic'
+import { decryptData } from 'utils/encryption'
+import { getPrivateKeyFromMnemonic } from 'utils/mnemonic'
 
-import checkMnemonicType from './checkMnemonicType'
+import { checkMnemonicType } from '.'
 
-function getPrivateKey(wallet: Wallet, internalKey: Uint8Array, encryptionType: string): string {
+export async function getPrivateKey(
+  wallet: Wallet,
+  internalKey: Uint8Array,
+  encryptionType: string,
+): Promise<string> {
   const {
     encrypted,
     type,
@@ -20,7 +24,6 @@ function getPrivateKey(wallet: Wallet, internalKey: Uint8Array, encryptionType: 
 
   if (checkMnemonicType(type)) {
     const {
-      network,
       addressIndex,
       derivationPath,
     }: Wallet = wallet
@@ -28,13 +31,12 @@ function getPrivateKey(wallet: Wallet, internalKey: Uint8Array, encryptionType: 
     if (
       !encrypted.mnemonic ||
       !encrypted.passphrase ||
-      !network ||
       !derivationPath
     ) {
       throw new Error(t`WalletDataError`)
     }
 
-    const mnemonic: string = decryptData({
+    const mnemonic: string = await decryptData({
       encryptionType,
       key: internalKey,
       data: encrypted.mnemonic,
@@ -43,14 +45,13 @@ function getPrivateKey(wallet: Wallet, internalKey: Uint8Array, encryptionType: 
     return getPrivateKeyFromMnemonic(
       mnemonic,
       addressIndex || 0,
-      decryptData({
+      await decryptData({
         encryptionType,
         key: internalKey,
         // $FlowFixMe
         data: encrypted.passphrase,
       }),
       derivationPath,
-      network,
     )
   } else {
     if (!encrypted.privateKey) {
@@ -64,5 +65,3 @@ function getPrivateKey(wallet: Wallet, internalKey: Uint8Array, encryptionType: 
     })
   }
 }
-
-export default getPrivateKey

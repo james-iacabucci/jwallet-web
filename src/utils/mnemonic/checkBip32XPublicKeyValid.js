@@ -2,7 +2,7 @@
 
 const BIP32_EXTENDABLE_PUBLIC_KEY_LENGTH: number = 111
 
-function checkBip32XPublicKeyValid(bip32XPublicKey: string): boolean {
+export async function checkBip32XPublicKeyValid(bip32XPublicKey: string): Promise<boolean> {
   if (!bip32XPublicKey || (bip32XPublicKey.length !== BIP32_EXTENDABLE_PUBLIC_KEY_LENGTH)) {
     return false
   }
@@ -12,5 +12,3 @@ function checkBip32XPublicKeyValid(bip32XPublicKey: string): boolean {
 
   return re.test(bip32XPublicKey)
 }
-
-export default checkBip32XPublicKeyValid

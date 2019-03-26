@@ -1,9 +1,9 @@
 // @flow
 
-import bitcore from 'bitcore-lib'
+import { getBitcore } from '.'
 
-function checkDerivationPathValid(derivationPath: string): boolean {
+export async function checkDerivationPathValid(derivationPath: string): Promise<boolean> {
+  const bitcore = await getBitcore()
+
   return bitcore.HDPrivateKey.isValidPath(derivationPath)
 }
-
-export default checkDerivationPathValid

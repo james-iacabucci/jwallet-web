@@ -34,7 +34,7 @@ function decryptNaclSecretbox(data: EncryptedData, key: Uint8Array): string {
   return util.encodeUTF8(decryptedData).trim()
 }
 
-function decryptData(payload: DecryptPayload): string {
+export async function decryptData(payload: DecryptPayload): Promise<string> {
   const {
     key,
     data,
@@ -47,5 +47,3 @@ function decryptData(payload: DecryptPayload): string {
 
   return decryptNaclSecretbox(data, key)
 }
-
-export default decryptData

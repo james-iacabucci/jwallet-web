@@ -1,8 +1,10 @@
 // @flow
 
-import { crypto } from 'bitcore-lib'
+import { getBitcoreCrypto } from 'utils/mnemonic'
 
-function generateSalt(byteCount: number): string {
+export async function generateSalt(byteCount: number): Promise<string> {
+  const crypto = await getBitcoreCrypto()
+
   return crypto.Random.getRandomBuffer(byteCount).toString('base64')
 }
 

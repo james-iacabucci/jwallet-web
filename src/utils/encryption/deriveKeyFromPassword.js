@@ -2,12 +2,12 @@
 
 import scrypt from 'scryptsy'
 
-function deriveKeyFromPassword(
+export async function deriveKeyFromPassword(
   password: string,
   scryptParams: ScryptParams,
   derivedKeyLength: number,
   salt: string,
-): Uint8Array {
+): Promise<Uint8Array> {
   const {
     N,
     r,
@@ -18,5 +18,3 @@ function deriveKeyFromPassword(
 
   return new Uint8Array(derivedKey)
 }
-
-export default deriveKeyFromPassword

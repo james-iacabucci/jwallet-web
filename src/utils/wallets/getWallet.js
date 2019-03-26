@@ -2,7 +2,7 @@
 
 import { t } from 'ttag'
 
-function getWallet(wallets: Wallets, walletId: ?string): Wallet {
+export async function getWallet(wallets: Wallets, walletId: ?string): Promise<Wallet> {
   if (!walletId) {
     throw new Error(t`WalletNotFoundError`)
   }
@@ -15,5 +15,3 @@ function getWallet(wallets: Wallets, walletId: ?string): Wallet {
 
   return { ...wallet }
 }
-
-export default getWallet

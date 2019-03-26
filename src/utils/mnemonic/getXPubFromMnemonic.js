@@ -1,16 +1,14 @@
 // @flow
 
-import getPrivateHdRoot from './getPrivateHdRoot'
+import { getPrivateHdRoot } from '.'
 
-function getXPubFromMnemonic(
+export async function getXPubFromMnemonic(
   mnemonic: string,
   passphrase: string,
   derivationPath: string,
   network?: ?NetworkId = null,
-): string {
-  const hdRoot: HDPrivateKey = getPrivateHdRoot(mnemonic, passphrase, derivationPath, network)
+): Promise<string> {
+  const hdRoot: HDPrivateKey = await getPrivateHdRoot(mnemonic, passphrase, derivationPath, network)
 
   return hdRoot.hdPublicKey.toString()
 }
-
-export default getXPubFromMnemonic

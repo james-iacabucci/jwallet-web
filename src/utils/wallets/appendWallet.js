@@ -1,6 +1,6 @@
 // @flow
 
-function appendWallet(wallets: Wallets, wallet: Wallet): Wallets {
+export async function appendWallet(wallets: Wallets, wallet: Wallet): Promise<Wallets> {
   /* eslint-disable-next-line fp/no-mutating-methods */
   return [
     ...wallets,
@@ -14,5 +14,3 @@ function appendWallet(wallets: Wallets, wallet: Wallet): Wallets {
   })
   /* eslint-enable-next-line fp/no-mutating-methods */
 }
-
-export default appendWallet

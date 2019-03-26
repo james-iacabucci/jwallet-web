@@ -6,7 +6,7 @@ import { t } from 'ttag'
 
 import config from 'config'
 
-import getNonce from './getNonce'
+import { getNonce } from '.'
 
 type EncryptPayload = {|
   +data: string,
@@ -28,8 +28,8 @@ function encodeEncryptedData(encryptedData: Uint8Array, nonce: Uint8Array): Encr
   }
 }
 
-function encryptNaclSecretbox(data: string, key: Uint8Array): EncryptedData {
-  const nonce: Uint8Array = getNonce(nacl.secretbox.nonceLength)
+async function encryptNaclSecretbox(data: string, key: Uint8Array): Promise<EncryptedData> {
+  const nonce: Uint8Array = await getNonce(nacl.secretbox.nonceLength)
   const dataToEncrypt: Uint8Array = util.decodeUTF8(data)
   const encryptedData: ?Uint8Array = nacl.secretbox(dataToEncrypt, nonce, key)
 
@@ -40,7 +40,7 @@ function encryptNaclSecretbox(data: string, key: Uint8Array): EncryptedData {
   return encodeEncryptedData(encryptedData, nonce)
 }
 
-function encryptData(payload: EncryptPayload): EncryptedData {
+export async function encryptData(payload: EncryptPayload): Promise<EncryptedData> {
   const {
     key,
     data,
@@ -55,5 +55,3 @@ function encryptData(payload: EncryptPayload): EncryptedData {
 
   return encryptNaclSecretbox(dataPad, key)
 }
-
-export default encryptData

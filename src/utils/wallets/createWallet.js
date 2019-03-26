@@ -4,7 +4,7 @@ import uuidv4 from 'uuid/v4'
 import { t } from 'ttag'
 
 import config from 'config'
-import encryptData from 'utils/encryption/encryptData'
+import { encryptData } from 'utils/encryption'
 
 import {
   strip0x,
@@ -41,12 +41,12 @@ function getNextOrderIndex(wallets: Wallets): number {
   return (current + 1)
 }
 
-function createMnemonicWallet(
+async function createMnemonicWallet(
   wallets: Wallets,
   walletData: WalletData,
   internalKey: Uint8Array,
   encryptionType: string,
-): Wallets {
+): Promise<Wallets> {
   const {
     id,
     data,
@@ -68,7 +68,7 @@ function createMnemonicWallet(
   }
 
   const mnemonic: string = data.toLowerCase()
-  const xpub: string = getXPubFromMnemonic(mnemonic, passphrase, derivationPath, network)
+  const xpub: string = await getXPubFromMnemonic(mnemonic, passphrase, derivationPath)
 
   checkWalletUniqueness(wallets, xpub, 'bip32XPublicKey')
 
@@ -87,12 +87,12 @@ function createMnemonicWallet(
     customType: config.mnemonicWalletType,
     encrypted: {
       privateKey: null,
-      mnemonic: encryptData({
+      mnemonic: await encryptData({
         encryptionType,
         data: mnemonic,
         key: internalKey,
       }),
-      passphrase: encryptData({
+      passphrase: await encryptData({
         encryptionType,
         data: passphrase,
         key: internalKey,
@@ -105,7 +105,10 @@ function createMnemonicWallet(
   })
 }
 
-function createReadOnlyMnemonicWallet(wallets: Wallets, walletData: WalletData): Wallets {
+async function createReadOnlyMnemonicWallet(
+  wallets: Wallets,
+  walletData: WalletData,
+): Promise<Wallets> {
   const {
     id,
     data,
@@ -142,12 +145,12 @@ function createReadOnlyMnemonicWallet(wallets: Wallets, walletData: WalletData):
   })
 }
 
-function createAddressWallet(
+async function createAddressWallet(
   wallets: Wallets,
   walletData: WalletData,
   internalKey: Uint8Array,
   encryptionType: string,
-): Wallets {
+): Promise<Wallets> {
   const {
     id,
     data,
@@ -174,7 +177,7 @@ function createAddressWallet(
     encrypted: {
       mnemonic: null,
       passphrase: null,
-      privateKey: encryptData({
+      privateKey: await encryptData({
         encryptionType,
         key: internalKey,
         data: strip0x(privateKey),
@@ -190,7 +193,10 @@ function createAddressWallet(
   })
 }
 
-function createReadOnlyAddressWallet(wallets: Wallets, walletData: WalletData): Wallets {
+async function createReadOnlyAddressWallet(
+  wallets: Wallets,
+  walletData: WalletData,
+): Promise<Wallets> {
   const {
     id,
     data,
@@ -227,12 +233,12 @@ function createReadOnlyAddressWallet(wallets: Wallets, walletData: WalletData): 
   })
 }
 
-function createWallet(
+export async function createWallet(
   wallets: Wallets,
   walletNewData: WalletNewData,
   internalKey: Uint8Array,
   encryptionType: string,
-): Wallets {
+): Promise<Wallets> {
   const {
     data,
     name,
@@ -257,7 +263,7 @@ function createWallet(
     orderIndex: getNextOrderIndex(wallets),
   }
 
-  if (checkMnemonicValid(data)) {
+  if (await checkMnemonicValid(data)) {
     return createMnemonicWallet(wallets, walletData, internalKey, encryptionType)
   } else if (checkBip32XPublicKeyValid(data)) {
     return createReadOnlyMnemonicWallet(wallets, walletData)
@@ -269,5 +275,3 @@ function createWallet(
     throw new Error(t`WalletDataError`)
   }
 }
-
-export default createWallet

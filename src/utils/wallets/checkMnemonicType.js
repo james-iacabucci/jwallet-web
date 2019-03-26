@@ -1,9 +1,7 @@
 // @flow
 
-import config from 'config'
+const MNEMONIC_WALLET_TYPE = 'mnemonic'
 
-function checkMnemonicType(walletType: ?WalletType): boolean {
-  return (walletType === config.mnemonicWalletType)
+export async function checkMnemonicType(walletType: ?WalletType): Promise<boolean> {
+  return (walletType === MNEMONIC_WALLET_TYPE)
 }
-
-export default checkMnemonicType

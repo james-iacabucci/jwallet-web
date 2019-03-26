@@ -1,33 +1,16 @@
 // @flow
 
-import getWallet from './getWallet'
-import getAddress from './getAddress'
-import getMnemonic from './getMnemonic'
-import getAddresses from './getAddresses'
-import appendWallet from './appendWallet'
-import createWallet from './createWallet'
-import removeWallet from './removeWallet'
-import updateWallet from './updateWallet'
-import upgradeWallet from './upgradeWallet'
-import getBackupData from './getBackupData'
-import getPrivateKey from './getPrivateKey'
-import getTypeByInput from './getTypeByInput'
-import checkMnemonicType from './checkMnemonicType'
-import checkWalletUniqueness from './checkWalletUniqueness'
-
-export {
-  getWallet,
-  getAddress,
-  getMnemonic,
-  getAddresses,
-  appendWallet,
-  createWallet,
-  removeWallet,
-  updateWallet,
-  upgradeWallet,
-  getBackupData,
-  getPrivateKey,
-  getTypeByInput,
-  checkMnemonicType,
-  checkWalletUniqueness,
-}
+export { getWallet } from './getWallet'
+export { getAddress } from './getAddress'
+export { getMnemonic } from './getMnemonic'
+export { getAddresses } from './getAddresses'
+export { appendWallet } from './appendWallet'
+export { createWallet } from './createWallet'
+export { removeWallet } from './removeWallet'
+export { updateWallet } from './updateWallet'
+export { upgradeWallet } from './upgradeWallet'
+export { getBackupData } from './getBackupData'
+export { getPrivateKey } from './getPrivateKey'
+export { getTypeByInput } from './getTypeByInput'
+export { checkMnemonicType } from './checkMnemonicType'
+export { checkWalletUniqueness } from './checkWalletUniqueness'

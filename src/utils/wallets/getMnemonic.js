@@ -2,24 +2,24 @@
 
 import { t } from 'ttag'
 
-import decryptData from 'utils/encryption/decryptData'
+import { decryptData } from 'utils/encryption'
 
 import {
   getWallet,
   checkMnemonicType,
 } from '.'
 
-function getMnemonic(
+export async function getMnemonic(
   wallets: Wallets,
   walletId: string,
   internalKey: Uint8Array,
   encryptionType: string,
-): string {
+): Promise<string> {
   const {
     encrypted,
     type,
     isReadOnly,
-  }: Wallet = getWallet(wallets, walletId)
+  }: Wallet = await getWallet(wallets, walletId)
 
   if (
     isReadOnly ||
@@ -30,11 +30,8 @@ function getMnemonic(
   }
 
   return decryptData({
-    // $FlowFixMe
     encryptionType,
     key: internalKey,
     data: encrypted.mnemonic,
   })
 }
-
-export default getMnemonic

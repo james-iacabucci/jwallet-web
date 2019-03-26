@@ -6,11 +6,11 @@ import {
   removeWallet,
 } from '.'
 
-function updateWallet(
+export async function updateWallet(
   wallets: Wallets,
   walletId: string,
   updatedData: WalletUpdatedData,
-): Wallets {
+): Promise<Wallets> {
   const {
     encrypted,
     name,
@@ -23,7 +23,7 @@ function updateWallet(
     isSimplified,
   }: WalletUpdatedData = updatedData
 
-  const wallet: Wallet = getWallet(wallets, walletId)
+  const wallet: Wallet = await getWallet(wallets, walletId)
 
   const newWallet: Wallet = {
     ...wallet,
@@ -38,9 +38,7 @@ function updateWallet(
     isSimplified: (typeof (isSimplified) === 'boolean') ? isSimplified : wallet.isSimplified,
   }
 
-  const newWallets: Wallets = removeWallet(wallets, walletId)
+  const newWallets: Wallets = await removeWallet(wallets, walletId)
 
   return appendWallet(newWallets, newWallet)
 }
-
-export default updateWallet

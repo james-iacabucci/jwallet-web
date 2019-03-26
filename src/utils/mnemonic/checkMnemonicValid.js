@@ -1,15 +1,13 @@
 // @flow
 
-import Mnemonic from 'bitcore-mnemonic'
+import { getBitcoreMnemonic } from '.'
 
-const ENGLISH_WORDS: string[] = Mnemonic.Words.ENGLISH
-
-function checkMnemonicValid(mnemonic: string): boolean {
+export async function checkMnemonicValid(mnemonic: string): Promise<boolean> {
   try {
-    return Mnemonic.isValid(mnemonic, ENGLISH_WORDS)
+    const Mnemonic = await getBitcoreMnemonic()
+
+    return Mnemonic.isValid(mnemonic, Mnemonic.Words.ENGLISH)
   } catch (err) {
     return false
   }
 }
-
-export default checkMnemonicValid

@@ -13,7 +13,7 @@ import {
 import config from 'config'
 import walletsWorker from 'workers/wallets'
 import checkPasswordStrength from 'utils/encryption/checkPasswordStrength'
-import checkDerivationPathValid from 'utils/mnemonic/checkDerivationPathValid'
+import { checkDerivationPathValid } from 'utils/mnemonic'
 
 import {
   getTypeByInput,

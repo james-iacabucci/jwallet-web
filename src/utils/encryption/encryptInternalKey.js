@@ -1,17 +1,15 @@
 // @flow
 
-import encryptData from './encryptData'
+import { encryptData } from '.'
 
-function encryptInternalKey(
+export async function encryptInternalKey(
   internalKey: Uint8Array,
   derivedKey: Uint8Array,
   encryptionType: string,
-): EncryptedData {
+): Promise<EncryptedData> {
   return encryptData({
     encryptionType,
     key: derivedKey,
     data: internalKey.toString(),
   })
 }
-
-export default encryptInternalKey

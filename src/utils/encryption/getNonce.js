@@ -2,8 +2,6 @@
 
 import nacl from 'tweetnacl'
 
-function getNonce(nonceLength: number): Uint8Array {
-  return nacl.randomBytes(nonceLength)
+export function getNonce(nonceLength: number): Promise<Uint8Array> {
+  return Promise.resolve(nacl.randomBytes(nonceLength))
 }
-
-export default getNonce

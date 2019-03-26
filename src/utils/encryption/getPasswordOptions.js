@@ -2,17 +2,19 @@
 
 import config from 'config'
 
-import generateSalt from './generateSalt'
+import { getNonce } from '.'
 
-function getPasswordOptions(passwordHint: string): PasswordOptions {
+const SALT_BYTES_COUNT = 32
+
+export async function getPasswordOptions(passwordHint: string): Promise<PasswordOptions> {
+  const nonce: Uint8Array = await getNonce(SALT_BYTES_COUNT)
+
   return {
     passwordHint: passwordHint || '',
     scryptParams: config.defaultScryptParams,
+    salt: Buffer.from(nonce).toString('base64'),
     encryptionType: config.defaultEncryptionType,
-    saltBytesCount: config.defaultSaltBytesCount,
-    salt: generateSalt(config.defaultSaltBytesCount),
+    saltBytesCount: SALT_BYTES_COUNT,
     derivedKeyLength: config.defaultDerivationKeyLength,
   }
 }
-
-export default getPasswordOptions

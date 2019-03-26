@@ -4,7 +4,7 @@ import config from 'config'
 
 const DEFAULT_NETWORK: string = 'livenet'
 
-function getMnemonicOptions(options: ?MnemonicOptionsUser): MnemonicOptions {
+export async function getMnemonicOptions(options: ?MnemonicOptionsUser): Promise<MnemonicOptions> {
   return !options ? {
     passphrase: '',
     network: DEFAULT_NETWORK,
@@ -15,5 +15,3 @@ function getMnemonicOptions(options: ?MnemonicOptionsUser): MnemonicOptions {
     derivationPath: options.derivationPath || config.defaultDerivationPath,
   }
 }
-
-export default getMnemonicOptions

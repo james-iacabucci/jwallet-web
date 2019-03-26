@@ -2,11 +2,11 @@
 
 import { t } from 'ttag'
 
-function checkWalletUniqueness(
+export async function checkWalletUniqueness(
   wallets: Wallets,
   uniqueProperty: string,
   propertyName: string,
-): void {
+): Promise<void> {
   const foundWallet: ?Wallet = wallets.find((wallet: Wallet): boolean => {
     const propertyValue: string = wallet[propertyName]
 
@@ -17,5 +17,3 @@ function checkWalletUniqueness(
     throw new Error(t`Wallet with such ${foundWallet.name} already exists`)
   }
 }
-
-export default checkWalletUniqueness

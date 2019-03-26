@@ -1,16 +1,22 @@
 // @flow
 
-import {
-  getPublicHdRoot,
-  generateAddress,
-} from '.'
+import { getAddressFromPublicKey } from 'utils/address'
 
-function generateAddresses(
+import { getPublicHdRoot } from '.'
+
+function generateAddress(hdRoot: HDPublicKey, index: number): string {
+  const generatedKey: HDPublicKey = hdRoot.derive(index)
+  const publicKey: string = generatedKey.publicKey.toString()
+
+  return getAddressFromPublicKey(publicKey)
+}
+
+export async function generateAddresses(
   bip32XPublicKey: string,
   start: ?number,
   end: ?number,
-): string[] {
-  const hdRoot: HDPublicKey = getPublicHdRoot(bip32XPublicKey)
+): Promise<string[]> {
+  const hdRoot: HDPublicKey = await getPublicHdRoot(bip32XPublicKey)
   const startIndex: number = start || 0
   const endIndex: number = end || startIndex
   const addressesCount: number = endIndex - startIndex
@@ -18,7 +24,8 @@ function generateAddresses(
   // generate range from 0 to addressesCount
   return Array
     .from(new Array(addressesCount + 1).keys())
-    .map((currentIndex: number): string => generateAddress(hdRoot, startIndex + currentIndex))
+    .map((currentIndex: number): string => generateAddress(
+      hdRoot,
+      startIndex + currentIndex,
+    ))
 }
-
-export default generateAddresses

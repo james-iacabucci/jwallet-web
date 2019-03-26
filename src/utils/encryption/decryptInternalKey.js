@@ -7,16 +7,16 @@ import {
   decryptData,
 } from '.'
 
-function decryptInternalKey(
+export async function decryptInternalKey(
   internalKey: ?EncryptedData,
   derivedKey: Uint8Array,
   encryptionType: string,
-): Uint8Array {
+): Promise<Uint8Array> {
   if (!internalKey) {
     return getNonce(config.defaultDerivationKeyLength)
   }
 
-  const key: string = decryptData({
+  const key: string = await decryptData({
     encryptionType,
     key: derivedKey,
     data: internalKey,
@@ -24,5 +24,3 @@ function decryptInternalKey(
 
   return new Uint8Array(key.split(',').map(i => parseInt(i, 10)))
 }
-
-export default decryptInternalKey

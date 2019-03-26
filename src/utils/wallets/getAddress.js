@@ -2,20 +2,23 @@
 
 import { t } from 'ttag'
 
-import generateAddresses from 'utils/mnemonic/generateAddresses'
+import { generateAddresses } from 'utils/mnemonic'
 
 import {
   getWallet,
   checkMnemonicType,
 } from '.'
 
-function getAddress(wallets: Wallets, walletId: string): Address {
+export async function getAddress(
+  wallets: Wallets,
+  walletId: string,
+): Promise<Address> {
   const {
     type,
     address,
     bip32XPublicKey,
     addressIndex,
-  }: Wallet = getWallet(wallets, walletId)
+  }: Wallet = await getWallet(wallets, walletId)
 
   if (!checkMnemonicType(type)) {
     if (!address) {
@@ -32,9 +35,7 @@ function getAddress(wallets: Wallets, walletId: string): Address {
     throw new Error(t`WalletDataError`)
   }
 
-  const derivedAddresses: Address[] = generateAddresses(bip32XPublicKey, indexStart, indexEnd)
+  const derivedAddresses: Address[] = await generateAddresses(bip32XPublicKey, indexStart, indexEnd)
 
   return derivedAddresses[0]
 }
-
-export default getAddress

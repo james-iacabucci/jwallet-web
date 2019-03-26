@@ -1,18 +1,18 @@
 // @flow
 
-import bitcore from 'bitcore-lib'
+import {
+  getHdPath,
+  getBitcore,
+} from '.'
 
-import getHdPath from './getHdPath'
-
-function getPrivateHdRoot(
+export async function getPrivateHdRoot(
   mnemonic: string,
   passphrase: string,
   derivationPath: string,
   network: ?NetworkId,
-): HDPrivateKey {
-  const hdPath: string = getHdPath(mnemonic, passphrase, derivationPath, network)
+): Promise<HDPrivateKey> {
+  const hdPath: string = await getHdPath(mnemonic, passphrase, derivationPath, network)
+  const bitcore = await getBitcore()
 
   return new bitcore.HDPrivateKey(hdPath)
 }
-
-export default getPrivateHdRoot
