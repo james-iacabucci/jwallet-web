@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import { JFieldMessage } from 'components/base'
 import { getErrorMessage } from 'utils/form'
 
-import pickerStyle from './recipientPicker.module.scss'
+import pickerStyle from './recipientPicker.m.scss'
 
 type RendererParams = {|
   +isOpened: boolean,
@@ -34,7 +34,7 @@ type StateProps = {|
 class RecipientPicker extends React.Component<Props, StateProps> {
   static defaultProps = {
     className: '',
-    currentRenderer: null,
+    currentRenderer: () => null,
     isDisabled: false,
     tabsRenderer: null,
     meta: {},
