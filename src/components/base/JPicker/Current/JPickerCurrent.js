@@ -41,6 +41,7 @@ function JPickerCurrent({
         hasError && pickerCurrentStyle.error,
         isEditable && pickerCurrentStyle.editble,
         hasValue && pickerCurrentStyle.value,
+        iconRenderer && pickerCurrentStyle.hasIcon,
       )}
       onClick={onClick}
     >

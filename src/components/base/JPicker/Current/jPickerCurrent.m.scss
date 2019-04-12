@@ -14,7 +14,7 @@
   position: absolute;
   display: block;
   top: 24px;
-  left: 64px;
+  left: 16px;
   font-size: 14px;
   line-height: 22px;
   cursor: text;
@@ -28,7 +28,7 @@
   @include font(14px, 14px);
 
   display: block;
-  padding: 24px 64px 26px 64px;
+  padding: 24px 64px 26px 16px;
   line-height: 22px;
   width: 100%;
   background: inherit;
@@ -56,6 +56,16 @@
     top: 16px;
     font-size: 12px;
     background-color: transparent;
+  }
+}
+
+.has-icon {
+  .input {
+    padding-left: 64px;
+  }
+
+  .label {
+    left: 64px;
   }
 }
 
