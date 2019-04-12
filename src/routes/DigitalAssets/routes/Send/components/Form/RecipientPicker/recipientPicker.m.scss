@@ -1,0 +1,51 @@
+// stylelint-disable rscss/class-format, selector-nested-pattern
+
+@import "styles/mixins";
+@import "styles/colors";
+
+$form-left-padding: 24px;
+$form-right-padding: 16px;
+
+.core {
+  position: relative;
+}
+
+.wrap {
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 3px 6px rgba(8, 30, 57, 0.05);
+  background-color: $white;
+
+  &:hover,
+  &.open {
+    box-shadow: 0 9px 18px rgba(8, 30, 57, 0.05);
+  }
+}
+
+.chevron {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24px;
+}
+
+.options {
+  > .tabs {
+    height: 56px;
+  }
+
+  > .list {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 288px;
+  }
+}
+
+.message {
+  margin-bottom: 8px;
+}
+
+.field-message {
+  padding-left: 16px;
+}

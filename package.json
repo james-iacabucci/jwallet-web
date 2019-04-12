@@ -26,6 +26,7 @@
     "flow-coverage": "npm run clean:report:flow && ./node_modules/.bin/flow-coverage-report",
     "test": "npm run test:unit",
     "test:unit": "./node_modules/.bin/jest --config=./jest.config.js",
+    "test:unit:dev": "./node_modules/.bin/jest --config=./jest.config.js --watch --verbose",
     "test:functional:smoke": "npm run clean:report:tests:functional && NODE_ENV=development ./node_modules/.bin/wdio wdio.conf.js --suite smoke",
     "test:functional:all": "npm run clean:report:tests:functional && NODE_ENV=development ./node_modules/.bin/wdio wdio.conf.js",
     "test:functional:regression": "npm run clean:report:tests:functional && NODE_ENV=development ./node_modules/.bin/wdio wdio.conf.js --suite regression",
