@@ -6,7 +6,9 @@ import React, { PureComponent } from 'react'
 import { JIcon } from 'components/base'
 import handle from 'utils/eventHandlers/handle'
 
-import jPickerStyle from './pickerCurrent.m.scss'
+import { JPickerItem } from './Item/JPickerItem'
+
+import jPickerStyle from './jPicker.m.scss'
 
 type RendererProps = {
   isOpen: boolean,
@@ -38,12 +40,8 @@ class JPicker extends PureComponent<Props, ComponentState> {
     errorMessage: '',
   }
 
-  constructor(props: Props) {
-    super(props)
-
-    this.state = {
-      isOpen: false,
-    }
+  state = {
+    isOpen: false,
   }
 
   toggle = (isOpen: boolean) => {
@@ -68,7 +66,9 @@ class JPicker extends PureComponent<Props, ComponentState> {
       isDisabled,
     } = this.props
 
-    const { isOpen } = this.state
+    const {
+      isOpen,
+    } = this.state
 
     const currentEl = !currentRenderer ? null : currentRenderer({
       isOpen,
@@ -110,7 +110,10 @@ class JPicker extends PureComponent<Props, ComponentState> {
               </div>
             )}
             <div className={jPickerStyle.items}>
-              {children}
+              {/* eslint-disable-next-line unicorn/no-fn-reference-in-iterator */}
+              {React.Children.map(children, item => (
+                <JPickerItem>{item}</JPickerItem>
+              ))}
             </div>
           </div>
         </div>

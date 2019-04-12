@@ -10,7 +10,8 @@ import { storiesOf } from '@storybook/react'
 
 import { JIcon } from 'components/base'
 
-// import { RecipientPicker } from './RecipientPicker'
+import { JPicker } from './JPicker'
+import { JPickerItem } from './Item/Item'
 import { JPickerCurrent } from './Current/JPickerCurrent'
 
 // function formStoryWrapper(component, extraProps = {}, initialValues = { }) {
@@ -34,7 +35,39 @@ import { JPickerCurrent } from './Current/JPickerCurrent'
 //   )
 // }
 
+// +onOpen: ?(() => void),
+// +onClose: ?(() => void),
+// +currentRenderer: ?((props: RendererProps) => React$Node),
+// +tabsRenderer: ?((props: RendererProps) => React$Node),
+// +children: ?React$Node,
+// +isDisabled: boolean,
+
+function currentRenderer() {
+  return (
+    <JPickerCurrent
+      label='Recipient'
+      isEditable={false}
+      iconRenderer={() => <JIcon name='star' color='blue' />}
+    />
+  )
+}
+
 storiesOf('base|JPicker', module)
+  .add('Default', () => (
+    <div className='story'>
+      <JPicker
+        label='Recipient'
+        isEditable={false}
+        iconRenderer={() => <JIcon name='star' color='blue' />}
+        currentRenderer={currentRenderer}
+      >
+        <JPickerItem>1</JPickerItem>
+        <JPickerItem>2</JPickerItem>
+        <JPickerItem>3</JPickerItem>
+        <JPickerItem>4</JPickerItem>
+      </JPicker>
+    </div>
+  ))
   .add('Picker current not editable', () => (
     <div className='story'>
       <JPickerCurrent

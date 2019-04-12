@@ -1,7 +1,11 @@
 // @flow
 
-import Item from './Item'
 import FullItem from './FullItem'
+import { JPickerItem } from './Item'
 
-export { FullItem }
-export default Item
+export {
+  FullItem,
+  JPickerItem,
+}
+
+export default JPickerItem
