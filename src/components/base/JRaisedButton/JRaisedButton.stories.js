@@ -23,7 +23,7 @@ const componentCard = {
   width: '140px',
 }
 
-storiesOf('JRaisedButton', module)
+storiesOf('base|JRaisedButton', module)
   .addDecorator(withKnobs)
   .add('Different status', () => (
     <div>

@@ -22,7 +22,7 @@ const componentCard = {
   padding: '20px',
 }
 
-storiesOf('JFieldMessage', module)
+storiesOf('base|JFieldMessage', module)
   .addDecorator(withKnobs)
   .add('Error and info messages', () => (
     <div>

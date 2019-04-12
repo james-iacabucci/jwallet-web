@@ -37,7 +37,7 @@ function formStoryWrapper(component, extraProps = {}, initialValues = { }) {
   )
 }
 
-storiesOf('SendAmountField', module)
+storiesOf('send asset|SendAmountField', module)
   .addDecorator(withKnobs)
   .add('Default', () => (
     <div className='story'>

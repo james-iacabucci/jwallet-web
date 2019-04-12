@@ -66,7 +66,7 @@ const AVAILABLE_ICONS = [
   ...iconsXLarge,
 ].sort()
 
-storiesOf('JIcon', module).addDecorator(withKnobs)
+storiesOf('base|JIcon', module).addDecorator(withKnobs)
   .add('Customizable', () => (
     <div>
       <h2 className='title'>Customizable example</h2>

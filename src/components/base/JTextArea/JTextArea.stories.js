@@ -32,7 +32,7 @@ function handleValidate(e) {
   return {}
 }
 
-storiesOf('JTextAreaField', module).addDecorator(withKnobs)
+storiesOf('base|JTextAreaField', module).addDecorator(withKnobs)
   .add('JTextArea as is', () => (
     <div className='story' style={{ background: '#e5e5e5' }}>
       <div className='grid'>
