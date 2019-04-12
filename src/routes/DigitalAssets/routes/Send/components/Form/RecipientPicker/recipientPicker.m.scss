@@ -12,13 +12,33 @@ $form-right-padding: 16px;
 
 .wrap {
   cursor: pointer;
-  height: 72px;
   padding: 0;
   box-shadow: 0 3px 6px rgba(8, 30, 57, 0.05);
   background-color: $white;
 
-  &:hover {
+  &:hover,
+  &.open {
     box-shadow: 0 9px 18px rgba(8, 30, 57, 0.05);
+  }
+}
+
+.chevron {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24px;
+}
+
+.options {
+  > .tabs {
+    height: 56px;
+  }
+
+  > .list {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 288px;
   }
 }
 

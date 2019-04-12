@@ -2,14 +2,11 @@
 
 import classNames from 'classnames'
 import React, { PureComponent } from 'react'
-import { Scrollbars } from 'react-custom-scrollbars'
 
+import { JIcon } from 'components/base'
 import handle from 'utils/eventHandlers/handle'
 
-import {
-  JIcon,
-  JText,
-} from 'components/base'
+import jPickerStyle from './pickerCurrent.m.scss'
 
 type RendererProps = {
   isOpen: boolean,
@@ -20,11 +17,9 @@ type Props = {|
   +onOpen: ?(() => void),
   +onClose: ?(() => void),
   +currentRenderer: ?((props: RendererProps) => React$Node),
-  +bottomRenderer: ?((props: RendererProps) => React$Node),
+  +tabsRenderer: ?((props: RendererProps) => React$Node),
   +children: ?React$Node,
   +isDisabled: boolean,
-  +infoMessage: string,
-  +errorMessage: string,
 |}
 
 type ComponentState = {|
@@ -37,7 +32,7 @@ class JPicker extends PureComponent<Props, ComponentState> {
     onClose: null,
     children: null,
     currentRenderer: null,
-    bottomRenderer: null,
+    tabsRenderer: null,
     isDisabled: false,
     infoMessage: '',
     errorMessage: '',
@@ -69,10 +64,8 @@ class JPicker extends PureComponent<Props, ComponentState> {
     const {
       children,
       currentRenderer,
-      bottomRenderer,
+      tabsRenderer,
       isDisabled,
-      infoMessage,
-      errorMessage,
     } = this.props
 
     const { isOpen } = this.state
@@ -82,58 +75,49 @@ class JPicker extends PureComponent<Props, ComponentState> {
       isDisabled,
     })
 
-    const bottomEl = !bottomRenderer ? null : bottomRenderer({
+    const tabsEl = !tabsRenderer ? null : tabsRenderer({
       isOpen,
       isDisabled,
     })
 
     const countClass = (React.Children.count(children) < 4)
-      ? `-c${React.Children.count(children)}`
+      ? `count-${React.Children.count(children)}`
       : null
 
     return (
       <div
         className={classNames(
-          'j-picker',
-          isOpen && '-active',
-          isDisabled && '-disabled',
-          countClass,
+          jPickerStyle.core,
+          isOpen && jPickerStyle.active,
+          isDisabled && jPickerStyle.disabled,
+          jPickerStyle[countClass],
         )}
       >
-        <div className='select'>
-          <div onClick={isDisabled ? undefined : handle(this.toggle)(!isOpen)} className='current'>
+        <div className={jPickerStyle.select}>
+          <div
+            onClick={isDisabled ? undefined : handle(this.toggle)(!isOpen)}
+            className={jPickerStyle.current}
+          >
             {currentEl}
-            <div className='chevron'>
+            <div className={jPickerStyle.chevron}>
               <JIcon name={isOpen ? 'chevron-up' : 'chevron-down'} color='blue' />
             </div>
           </div>
-          <div onClick={handle(this.toggle)(false)} className='options'>
-            <div className='items'>
-              <Scrollbars>
-                {children}
-              </Scrollbars>
-            </div>
-            {bottomEl && (
-              <div className='bottom'>
-                {bottomEl}
+          <div onClick={handle(this.toggle)(false)} className={jPickerStyle.options}>
+            {tabsEl && (
+              <div className={jPickerStyle.tabs}>
+                {tabsEl}
               </div>
             )}
+            <div className={jPickerStyle.items}>
+              {children}
+            </div>
           </div>
         </div>
-        {isOpen && <div onClick={handle(this.toggle)(false)} className='overlay' />}
-        {infoMessage && (
-          <div className='info'>
-            <JText value={infoMessage} color='orange' size='small' />
-          </div>
-        )}
-        {errorMessage && (
-          <div className='error'>
-            <JText value={errorMessage} color='red' size='small' />
-          </div>
-        )}
+        {isOpen && <div onClick={handle(this.toggle)(false)} className={jPickerStyle.overlay} />}
       </div>
     )
   }
 }
 
-export default JPicker
+export { JPicker }

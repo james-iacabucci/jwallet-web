@@ -3,17 +3,20 @@
 import * as React from 'react'
 import classNames from 'classnames'
 
-import { JFieldMessage } from 'components/base'
+import {
+  JFieldMessage,
+  JIcon,
+} from 'components/base'
 import { getErrorMessage } from 'utils/form'
 
+import { PickerCurrent } from './Current/JPickerCurrent'
 import pickerStyle from './recipientPicker.m.scss'
 
 type RendererParams = {|
-  +isOpened: boolean,
+  +isOpen: boolean,
   +isDisabled: boolean,
+  +onClick: Function,
 |}
-
-// type PickerKey = 'UP' | 'DOWN' | 'RIGHT' | 'LEFT'
 
 type Props = {|
   +children: React$Node,
@@ -22,19 +25,22 @@ type Props = {|
   +infoMessage: string,
   +validateType: FinalFormValidateType,
   +meta: FinalFormMeta,
-  // +onKeyPress: (key: PickerKey) => any,
+
   +currentRenderer: (params: RendererParams) => React$Node,
   +tabsRenderer: ?((params: RendererParams) => React$Node),
 |}
 
 type StateProps = {|
-  isOpened: boolean,
+  isOpen: boolean,
 |}
 
 class RecipientPicker extends React.Component<Props, StateProps> {
   static defaultProps = {
     className: '',
-    currentRenderer: () => null,
+    currentRenderer: ({
+      isOpen,
+      onClick,
+    }) => <PickerCurrent isEditable={isOpen} label='My Picker' onClick={onClick} />,
     isDisabled: false,
     tabsRenderer: null,
     meta: {},
@@ -42,26 +48,26 @@ class RecipientPicker extends React.Component<Props, StateProps> {
   }
 
   state: StateProps = {
-    isOpened: false,
+    isOpen: false,
   }
 
   componentWillUnmount() {
-    document.removeEventListener('click', this.close)
+    document.removeEventListener('click', this.handleClose)
   }
 
-  open = () => {
-    this.setState({ isOpened: true }, () => {
-      document.addEventListener('click', this.close)
+  handleOpen = () => {
+    this.setState({ isOpen: true }, () => {
+      document.addEventListener('click', this.handleClose)
     })
   }
 
-  close = () => {
-    document.removeEventListener('click', this.close)
-    this.setState({ isOpened: false })
+  handleClose = () => {
+    document.removeEventListener('click', this.handleClose)
+    this.setState({ isOpen: false })
   }
 
   toggle = () => {
-    if (this.state.isOpened) {
+    if (this.state.isOpen) {
       this.close()
     } else {
       this.open()
@@ -78,7 +84,7 @@ class RecipientPicker extends React.Component<Props, StateProps> {
       validateType,
     } = this.props
 
-    const { isOpened } = this.state
+    const { isOpen } = this.state
 
     const errorMessage = getErrorMessage(meta, validateType)
     const hasError = !!errorMessage
@@ -90,36 +96,35 @@ class RecipientPicker extends React.Component<Props, StateProps> {
 
     const rendererParams = {
       isDisabled,
-      isOpened,
+      isOpen,
+      onClick: this.handleOpen,
     }
 
     return (
       <div className={classNames(
         pickerStyle.core,
         isDisabled && pickerStyle.disabled,
-        isOpened && pickerStyle.opened,
+        isOpen && pickerStyle.open,
         className,
       )}
       >
         <div className={classNames(pickerStyle.wrap)}>
-          <div className={pickerStyle.current}>
-            {this.props.currentRenderer(rendererParams)}
+          {this.props.currentRenderer(rendererParams)}
+          <div className={pickerStyle.chevron}>
+            <JIcon name={isOpen ? 'chevron-up' : 'chevron-down'} color='blue' />
           </div>
-          <div className={pickerStyle.chevron} />
-        </div>
-        <div className={pickerStyle.popdown}>
-          <div className={pickerStyle.current}>
-            {this.props.currentRenderer(rendererParams)}
-          </div>
-          {this.props.tabsRenderer && (
-            <div className={pickerStyle.tabs}>
-              {this.props.tabsRenderer(rendererParams)}
+          <div className={pickerStyle.options}>
+            {this.props.tabsRenderer && (
+              <div className={pickerStyle.tabs}>
+                {this.props.tabsRenderer(rendererParams)}
+              </div>
+            )}
+            <div className={pickerStyle.list}>
+              {children}
             </div>
-          )}
-          <div className={pickerStyle.list}>
-            {children}
           </div>
         </div>
+        {isOpen && <div onClick={this.handleClose} className='overlay' />}
         {hasMessage && (
           <JFieldMessage
             theme={messageTheme}

@@ -8,7 +8,10 @@ import {
   Field,
 } from 'react-final-form'
 
+import { JIcon } from 'components/base'
+
 import { RecipientPicker } from './RecipientPicker'
+import { PickerCurrent } from './Current/JPickerCurrent'
 
 function formStoryWrapper(component, extraProps = {}, initialValues = { }) {
   return (
@@ -54,5 +57,14 @@ storiesOf('RecipientPicker', module)
         infoMessage: 'Hello world',
         validate: () => 'Some error',
       })}
+    </div>
+  ))
+  .add('Picker current', () => (
+    <div className='story'>
+      <PickerCurrent
+        label='Recipient'
+        value=''
+        iconRenderer={() => <JIcon name='star' color='blue' />}
+      />
     </div>
   ))
