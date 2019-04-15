@@ -1,45 +1,23 @@
-// @flow
+// @flow strict
 
-import classNames from 'classnames'
-import React, { PureComponent } from 'react'
+import * as React from 'react'
 
-import { JIcon } from 'components/base'
-import handle from 'utils/eventHandlers/handle'
-
-import { JPickerItem } from './Item/JPickerItem'
-
-import jPickerStyle from './jPicker.m.scss'
-
-type RendererProps = {
-  isOpen: boolean,
-  isDisabled: boolean,
-}
+import { JPickerBody } from './JPickerBody'
+import { JPickerList } from './List/JPickerList'
+import { DefaultItem } from './List/DefaultItem'
 
 type Props = {|
-  +onOpen: ?(() => void),
-  +onClose: ?(() => void),
-  +currentRenderer: ?((props: RendererProps) => React$Node),
-  +tabsRenderer: ?((props: RendererProps) => React$Node),
-  +children: ?React$Node,
-  +isDisabled: boolean,
+  items: any[],
+  isDisabled: boolean,
+  onOpen: Function,
+  onClose: Function,
 |}
 
 type ComponentState = {|
-  +isOpen: boolean,
+  isOpen: boolean,
 |}
 
-class JPicker extends PureComponent<Props, ComponentState> {
-  static defaultProps = {
-    onOpen: null,
-    onClose: null,
-    children: null,
-    currentRenderer: null,
-    tabsRenderer: null,
-    isDisabled: false,
-    infoMessage: '',
-    errorMessage: '',
-  }
-
+class JPicker extends React.Component<Props, ComponentState> {
   state = {
     isOpen: false,
   }
@@ -59,68 +37,20 @@ class JPicker extends PureComponent<Props, ComponentState> {
   }
 
   render() {
-    const {
-      children,
-      currentRenderer,
-      tabsRenderer,
-      isDisabled,
-    } = this.props
-
-    const {
-      isOpen,
-    } = this.state
-
-    const currentEl = !currentRenderer ? null : currentRenderer({
-      isOpen,
-      isDisabled,
-    })
-
-    const tabsEl = !tabsRenderer ? null : tabsRenderer({
-      isOpen,
-      isDisabled,
-    })
-
-    const countClass = (React.Children.count(children) < 4)
-      ? `count-${React.Children.count(children)}`
-      : null
-
     return (
-      <div
-        className={classNames(
-          jPickerStyle.core,
-          isOpen && jPickerStyle.active,
-          isDisabled && jPickerStyle.disabled,
-          jPickerStyle[countClass],
-        )}
-      >
-        <div className={jPickerStyle.select}>
-          <div
-            onClick={isDisabled ? undefined : handle(this.toggle)(!isOpen)}
-            className={jPickerStyle.current}
-          >
-            {currentEl}
-            <div className={jPickerStyle.chevron}>
-              <JIcon name={isOpen ? 'chevron-up' : 'chevron-down'} color='blue' />
-            </div>
-          </div>
-          <div onClick={handle(this.toggle)(false)} className={jPickerStyle.options}>
-            {tabsEl && (
-              <div className={jPickerStyle.tabs}>
-                {tabsEl}
-              </div>
-            )}
-            <div className={jPickerStyle.items}>
-              {/* eslint-disable-next-line unicorn/no-fn-reference-in-iterator */}
-              {React.Children.map(children, item => (
-                <JPickerItem>{item}</JPickerItem>
-              ))}
-            </div>
-          </div>
-        </div>
-        {isOpen && <div onClick={handle(this.toggle)(false)} className={jPickerStyle.overlay} />}
-      </div>
+      <React.Fragment>
+        <JPickerBody
+          isOpen={this.state.isOpen}
+          toggle={this.toggle}
+          isDisabled={this.props.isDisabled}
+        >
+          <JPickerList>
+          ..
+          </JPickerList>
+        </JPickerBody>
+      </React.Fragment>
     )
   }
 }
 
-export { JPicker }
+export default JPicker

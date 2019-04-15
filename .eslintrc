@@ -92,6 +92,7 @@
       "prev": ["case"],
       "next": "*"
     }],
+    "unicorn/no-fn-reference-in-iterator": 0,
     "fp/no-events": 0,
     "fp/no-mutation": [2, {
       "commonjs": true,

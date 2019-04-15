@@ -1,56 +1,87 @@
 // @flow
 
-import React, { useState } from 'react'
+import React from 'react'
 import classNames from 'classnames'
-
-import handle from 'utils/eventHandlers/handle'
 
 import { JPickerListItem } from './JPickerListItem'
 
-import jPickerItemStyle from './jPickerList.m.scss'
+import jPickerListStyle from './jPickerList.m.scss'
 
-type Props<T = any> = {|
-  value: T,
-  +onSelect: (value: T) => any,
-  items: T[],
+type Props = {|
+  +activeItemKey: ?string,
+  +onItemClick: (itemKey: string) => any,
+  +children: React$Node,
 |}
 
-class JPickerList extends React.Component<Props> {
+type ComponentState = {|
+  focusedItemKey: ?string,
+|}
+
+class JPickerList extends React.Component<Props, ComponentState> {
+  state: ComponentState = {
+    focusedItemKey: null,
+  }
+
+  handleItemFocus = (itemKey: string) => () => {
+    this.setState({ focusedItemKey: itemKey })
+  }
+
+  handleItemBlur = () => {
+    this.setState({ focusedItemKey: null })
+  }
+
+  handleItemClick = (itemKey: string) => () => {
+    if (this.props.onItemClick) {
+      this.props.onItemClick(itemKey)
+    }
+  }
+
   render() {
+    const {
+      activeItemKey,
+      children,
+    } = this.props
+
+    const {
+      focusedItemKey,
+    } = this.state
+
+    const count = React.Children.count(children)
+
     return (
       <div
-      className={classNames(
-        jPickerItemStyle.core,
-      )}
-    >
-      {items.map(item => (
-        <JPickerListItem
-          isSelected={value.id === item.id}
-          isHovered={value.id === hoveredItem.id}
-          value={value}
-          onSelect={onSelect}
-          onHover={setHoveredItemId}
-        >
-        </JPickerListItem>
-      ))}
-    </div>
+        className={classNames(
+          jPickerListStyle.core,
+          jPickerListStyle[`count-${count}`],
+        )}
+      >
+        {React.Children.map(children, (child) => {
+          const {
+            key,
+          } = child
+
+          if (!key) {
+            console.error('Invalid key for element', child)
+
+            return null
+          }
+
+          return (
+            <JPickerListItem
+              key={`root-${key}`}
+              isSelected={!!activeItemKey && activeItemKey === key}
+              isFocused={!!focusedItemKey && focusedItemKey === key}
+              onClick={this.handleItemClick(key)}
+              onFocus={this.handleItemFocus(key)}
+              onBlur={this.handleItemBlur}
+            >
+              {child}
+            </JPickerListItem>
+          )
+        })}
+      </div>
     )
   }
-}
-
-function JPickerList({
-  value,
-  onSelect,
-  items,
-}: Props) {
-  const [hoveredItemId, setHoveredItemId] = useState(null)
-
-  return (
-
-  )
-}
-
-JPickerList.defaultProps = {
 }
 
 export { JPickerList }

@@ -1,3 +1,5 @@
+@import "styles/mixins";
+@import "styles/colors";
 
 .core {
   position: relative;
@@ -6,7 +8,7 @@
   padding: 8px;
   background-origin: content-box;
 
-  &.hover {
+  &.focused {
     background-color: $main-black-5;
   }
 
@@ -14,7 +16,7 @@
     background-color: $main-blue-5;
   }
 
-  &.selected.hover {
+  &.selected.focused {
     background-color: $main-blue-10;
   }
 }

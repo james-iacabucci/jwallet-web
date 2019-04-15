@@ -1,54 +1,46 @@
 // @flow
 
-import React from 'react'
+import * as React from 'react'
 import classNames from 'classnames'
-
-import handle from 'utils/eventHandlers/handle'
 
 import jPickerItemStyle from './jPickerListItem.m.scss'
 
-type Props<T = any> = {|
+type Props = {|
   +isSelected: boolean,
-  +isHovered: boolean,
-  +value: T,
-  +onSelect: (value: T) => any,
-  +onHover: (value: T) => any,
-  +onBlur: (value: T) => any,
+  +isFocused: boolean,
+  +onClick: Function,
+  +onFocus: Function,
+  +onBlur: Function,
   +children: React$Node,
 |}
 
 function JPickerListItem({
   isSelected,
-  isHovered,
-  value,
-  onSelect,
-  onHover,
+  isFocused,
+  onClick,
+  onFocus,
   onBlur,
   children,
 }: Props) {
   return (
     <div
-      onClick={onSelect ? handle(onSelect)(value) : undefined}
-      onHover={onHover ? handle(onHover)(value) : undefined}
-      onBlur={onBlur ? handle(onBlur)(value) : undefined}
+      onClick={onClick}
+      onMouseEnter={onFocus}
+      onMouseLeave={onBlur}
       className={classNames(
         jPickerItemStyle.core,
         isSelected && jPickerItemStyle.selected,
-        isHovered && jPickerItemStyle.hover,
+        isFocused && jPickerItemStyle.focused,
       )}
     >
-      <div className={jPickerItemStyle.item}>{children}</div>
+      {children}
     </div>
   )
 }
 
 JPickerListItem.defaultProps = {
-  onSelect: () => {},
-  onHover: null,
-  onBlur: null,
-  value: null,
   isSelected: false,
-  isHovered: false,
+  isFocused: false,
 }
 
 export { JPickerListItem }
