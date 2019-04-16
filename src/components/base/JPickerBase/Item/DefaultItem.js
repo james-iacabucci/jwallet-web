@@ -1,7 +1,6 @@
 // @flow strict
 
 import * as React from 'react'
-import classNames from 'classnames'
 
 import {
   JIcon,
@@ -25,13 +24,7 @@ function DefaultItem({
   iconColor,
 }: Props) {
   return (
-    <div
-      className={classNames(
-        defaultItemStyles.core,
-        // iconName && defaultItemStyles.hasIcon,
-        // description && defaultItemStyles.hasDescription,
-      )}
-    >
+    <div className={defaultItemStyles.core}>
       {iconName && <JIcon name={iconName} color={iconColor} className={defaultItemStyles.icon} />}
       <div className={defaultItemStyles.wrap}>
         <span className={defaultItemStyles.title}>{title}</span>

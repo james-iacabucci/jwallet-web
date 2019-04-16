@@ -8,9 +8,9 @@ import jPickerItemStyle from './jPickerListItem.m.scss'
 type Props = {|
   +isSelected: boolean,
   +isFocused: boolean,
-  +onClick: Function,
-  +onFocus: Function,
   +onBlur: Function,
+  +onFocus: Function,
+  +onClick: Function,
   +children: React$Node,
 |}
 

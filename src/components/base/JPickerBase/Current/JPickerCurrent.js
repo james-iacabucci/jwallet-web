@@ -10,13 +10,13 @@ type Props = {
   +value: string,
   +inputValue: string,
   +label: string,
-  +onInputChange: Function,
-  +onInputFocus: Function,
-  +onInputBlur: Function,
-  +onClick: Function,
   +isEditable: boolean,
   +hasError: boolean,
-  +iconRenderer: Function,
+  +onClick: ?Function,
+  +onInputChange: ?Function,
+  +onInputFocus: ?Function,
+  +onInputBlur: ?Function,
+  +iconRenderer: ?Function,
 }
 
 function JPickerCurrent({
@@ -73,6 +73,12 @@ JPickerCurrent.defaultProps = {
   lebel: '',
   isEditable: true,
   editable: false,
+  hasError: false,
+  onClick: null,
+  onInputChange: null,
+  onInputFocus: null,
+  onInputBlur: null,
+  iconRenderer: null,
 }
 
 export { JPickerCurrent }

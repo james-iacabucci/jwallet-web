@@ -12,7 +12,6 @@
   height: 72px;
   box-shadow: 0 3px 6px 0 rgba($main-black, 0.05);
   background-color: $white;
-  // border-bottom: solid 1px $pale-grey-two;
   border-radius: 4px;
   transition:
     border-radius 0.3s ease 0s,
@@ -49,14 +48,6 @@
     transition:
       max-height 0.3s ease 0s,
       opacity 0.3s ease 0s;
-
-    // > .items {
-    //   overflow-x: hidden;
-    //   overflow-y: auto;
-    //   max-height: 0;
-    //   height: (72px * 4);
-    //   transition: max-height 0.3s ease 0s, opacity 0.3s ease 0s;
-    // }
   }
 }
 
@@ -70,21 +61,6 @@
   cursor: pointer;
 }
 
-// .-disabled,
-// .-disabled:hover {
-//   > .select {
-//     opacity: 0.7;
-
-//     > .current {
-//       cursor: default;
-
-//       > .chevron:hover {
-//         opacity: 0.5;
-//       }
-//     }
-//   }
-// }
-
 .active {
   > .select {
     border-radius: $form-border-radius $form-border-radius 0 0;
@@ -94,28 +70,6 @@
       visibility: visible;
       opacity: 1;
       max-height: none;
-
-      // > .items {
-      //   max-height: (72px * 4);
-      // }
     }
   }
 }
-
-// .count-3 > .select > .options > .items {
-//   height: (72px * 3);
-// }
-
-// .count-2 > .select > .options > .items {
-//   height: (72px * 2);
-// }
-
-// .count-1 > .select > .options > .items {
-//   height: (72px * 1);
-// }
-
-// .count-0 > .select > .options > .items {
-//   height: 0;
-//   padding-top: 0;
-//   padding-bottom: 0;
-// }

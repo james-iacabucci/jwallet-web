@@ -76,7 +76,7 @@ class DigitalAssetsSendFormAssetPicker extends Component<Props, ComponentState> 
     const { searchQuery }: ComponentState = this.state
 
     const activeAsset: ?DigitalAssetWithBalance =
-      getDigitalAssetByAddress/* :: <DigitalAssetWithBalance> */(digitalAssets, selectedAsset)
+      getDigitalAssetByAddress(digitalAssets, selectedAsset)
 
     const filteredDigitalAssets: DigitalAssetWithBalance[] = searchDigitalAssets(
       digitalAssets,

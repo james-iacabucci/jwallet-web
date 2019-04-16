@@ -39,7 +39,6 @@
     box-sizing: content-box;
     top: 73px;
     visibility: hidden;
-    overflow: hidden;
     opacity: 0;
     background-color: $white;
     box-shadow: 0 9px 18px 0 rgba($dusk, 0.1);
@@ -49,14 +48,6 @@
     transition:
       max-height 0.3s ease 0s,
       opacity 0.3s ease 0s;
-
-    // > .items {
-    //   overflow-x: hidden;
-    //   overflow-y: auto;
-    //   max-height: 0;
-    //   height: (72px * 4);
-    //   transition: max-height 0.3s ease 0s, opacity 0.3s ease 0s;
-    // }
   }
 }
 
@@ -94,28 +85,6 @@
       visibility: visible;
       opacity: 1;
       max-height: none;
-
-      // > .items {
-      //   max-height: (72px * 4);
-      // }
     }
   }
 }
-
-// .count-3 > .select > .options > .items {
-//   height: (72px * 3);
-// }
-
-// .count-2 > .select > .options > .items {
-//   height: (72px * 2);
-// }
-
-// .count-1 > .select > .options > .items {
-//   height: (72px * 1);
-// }
-
-// .count-0 > .select > .options > .items {
-//   height: 0;
-//   padding-top: 0;
-//   padding-bottom: 0;
-// }

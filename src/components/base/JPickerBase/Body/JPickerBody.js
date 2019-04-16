@@ -3,7 +3,6 @@
 import * as React from 'react'
 import classNames from 'classnames'
 
-import handle from 'utils/eventHandlers/handle'
 import { JIcon } from 'components/base'
 
 import jPickerBodyStyle from './jPickerBody.m.scss'
@@ -17,7 +16,8 @@ type Props = {|
   +isOpen: boolean,
   +isDisabled: boolean,
   +currentRenderer: ?((props: RendererProps) => React$Node),
-  +toggle: (isOpen: boolean) => any,
+  +onOpen: Function,
+  +onClose: Function,
   +children: ?React$Node,
 |}
 
@@ -25,7 +25,8 @@ function JPickerBody({
   isOpen,
   isDisabled,
   currentRenderer,
-  toggle,
+  onOpen,
+  onClose,
   children,
 }: Props) {
   const currentEl = !currentRenderer ? null : currentRenderer({
@@ -43,7 +44,7 @@ function JPickerBody({
     >
       <div className={jPickerBodyStyle.select}>
         <div
-          onClick={isDisabled ? undefined : handle(toggle)(!isOpen)}
+          onClick={isDisabled ? undefined : onOpen}
           className={jPickerBodyStyle.current}
         >
           {currentEl}
@@ -51,11 +52,11 @@ function JPickerBody({
             <JIcon name={isOpen ? 'chevron-up' : 'chevron-down'} color='blue' />
           </div>
         </div>
-        <div onClick={handle(toggle)(false)} className={jPickerBodyStyle.options}>
+        <div onClick={onClose} className={jPickerBodyStyle.options}>
           {children}
         </div>
       </div>
-      {isOpen && <div onClick={handle(toggle)(false)} className={jPickerBodyStyle.overlay} />}
+      {isOpen && <div onClick={onClose} className={jPickerBodyStyle.overlay} />}
     </div>
   )
 }
