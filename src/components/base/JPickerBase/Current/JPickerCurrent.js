@@ -8,7 +8,7 @@ import pickerCurrentStyle from './jPickerCurrent.m.scss'
 
 type Props = {
   +value: string,
-  +inputValue: string,
+  +inputValue: ?string,
   +label: string,
   +isEditable: boolean,
   +hasError: boolean,
@@ -75,6 +75,7 @@ JPickerCurrent.defaultProps = {
   editable: false,
   hasError: false,
   onClick: null,
+  inputValue: null,
   onInputChange: null,
   onInputFocus: null,
   onInputBlur: null,

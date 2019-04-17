@@ -8,8 +8,8 @@ import { JIcon } from 'components/base'
 import jPickerBodyStyle from './jPickerBody.m.scss'
 
 type RendererProps = {
-  isOpen: boolean,
-  isDisabled: boolean,
+  +isOpen: boolean,
+  +isDisabled: boolean,
 }
 
 type Props = {|
@@ -59,6 +59,11 @@ function JPickerBody({
       {isOpen && <div onClick={onClose} className={jPickerBodyStyle.overlay} />}
     </div>
   )
+}
+
+JPickerBody.defaultProps = {
+  isDisabled: false,
+  isOpen: false,
 }
 
 export { JPickerBody }

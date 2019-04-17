@@ -19,7 +19,9 @@ import { checkAddressValid } from 'utils/address'
 
 import {
   type FirstStepValues,
-} from '../../DigitalAssetsSendWizard'
+} from '../../Send'
+
+import { AssetPicker } from '../AssetPicker/AssetPickerContainer'
 
 import styles from './firstStepForm.m.scss'
 
@@ -116,7 +118,7 @@ class FirstStepForm extends Component<Props> {
             >
               {submitError && <div className='error'>{submitError}</div>}
               <Field
-                component={JInputField}
+                component={AssetPicker}
                 name='asset'
                 color='gray'
                 label={t`Asset address`}

@@ -7,7 +7,10 @@ import {
   Field,
 } from 'react-final-form'
 
+import { JIcon } from 'components/base'
+
 import { JPicker } from './JPicker'
+import { JPickerCurrent } from './Current/JPickerCurrent'
 
 // import { JIcon } from 'components/base'
 // import { JPickerItem } from './Item/Item'
@@ -87,47 +90,6 @@ storiesOf('base|JPicker', module)
       })}
     </div>
   ))
-  // .add('Default', () => (
-  //   <div className='story'>
-  //     <JPicker
-  //       label='Recipient'
-  //       isEditable={false}
-  //       iconRenderer={() => <JIcon name='star' color='blue' />}
-  //       currentRenderer={currentRenderer}
-  //     >
-  //       <JPicker
-  //         onItemClick={console.log}
-  //         visible
-  //         activeItem={{
-  //           key: '1',
-  //           title: 'Address 1',
-  //           description: '0x2223344556677',
-  //         }}
-  //         items={[{
-  //           key: '1',
-  //           title: 'Address 1',
-  //           description: '0x2223344556677',
-  //         }, {
-  //           key: '2',
-  //           title: 'Address 2',
-  //           description: '0x2223aa45566778899',
-  //         }, {
-  //           key: '3',
-  //           title: 'Address 3',
-  //           description: '0x22233445ss6778899',
-  //         }, {
-  //           key: '4',
-  //           title: 'Address 4',
-  //           description: '0xa1233445566778899',
-  //         }, {
-  //           key: '5',
-  //           title: 'Address 5',
-  //           description: '0xDD233433566778899',
-  //         }]}
-  //       />
-  //     </JPicker>
-  //   </div>
-  // ))
   // .add('JPicker internal list', () => (
   //   <div className='story'>
   //     <JPickerList
@@ -142,38 +104,39 @@ storiesOf('base|JPicker', module)
   //     </JPickerList>
   //   </div>
   // ))
-  // .add('Picker current not editable', () => (
-  //   <div className='story'>
-  //     <JPickerCurrent
-  //       label='Recipient'
-  //       isEditable={false}
-  //       iconRenderer={() => <JIcon name='star' color='blue' />}
-  //     />
-  //   </div>
-  // ))
-  // .add('Picker current not editable with value', () => (
-  //   <div className='story'>
-  //     <JPickerCurrent
-  //       label='Recipient'
-  //       value='asfd afs'
-  //       isEditable={false}
-  //       iconRenderer={() => <JIcon name='star' color='blue' />}
-  //     />
-  //   </div>
-  // ))
-  // .add('Picker current with icon', () => (
-  //   <div className='story'>
-  //     <JPickerCurrent
-  //       label='Recipient'
-  //       iconRenderer={() => <JIcon name='star' color='blue' />}
-  //     />
-  //   </div>
-  // ))
-  // .add('Picker current without icon', () => (
-  //   <div className='story'>
-  //     <JPickerCurrent
-  //       label='Recipient'
-  //       value='abcd'
-  //     />
-  //   </div>
-  // ))
+  .add('Picker current not editable', () => (
+    <div className='story'>
+      <JPickerCurrent
+        label='Recipient'
+        isEditable={false}
+        iconRenderer={() => <JIcon name='star' color='blue' />}
+      />
+    </div>
+  ))
+  .add('Picker current not editable with value', () => (
+    <div className='story'>
+      <JPickerCurrent
+        label='Recipient'
+        value='asfd afs'
+        isEditable={false}
+        iconRenderer={() => <JIcon name='star' color='blue' />}
+      />
+    </div>
+  ))
+  .add('Picker current with icon', () => (
+    <div className='story'>
+      <JPickerCurrent
+        label='Recipient'
+        iconRenderer={() => <JIcon name='star' color='blue' />}
+      />
+    </div>
+  ))
+  .add('Picker current without icon', () => (
+    <div className='story'>
+      <JPickerCurrent
+        label='Recipient'
+        value='abcd'
+      />
+    </div>
+  ))
+
